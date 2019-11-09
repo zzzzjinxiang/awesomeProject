@@ -15,11 +15,12 @@ func main() {
 	bc.AddBlock("first trial3")
 
 	for _, block := range bc.Blocks {
-		block = funcs.Cal(block)
+
 		fmt.Printf("prev hash: %x, ", block.PrevBlockHash)
 		fmt.Printf("data: %s, ", block.Data)
 		fmt.Printf("current hash: %x, ", block.Hash)
 		pow := funcs.NewProofOfWork(block)
+		block = funcs.Cal(block)
 		fmt.Printf("pow %s\n", strconv.FormatBool(pow.Validate()))
 		fmt.Println()
 	}

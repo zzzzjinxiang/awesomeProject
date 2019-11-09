@@ -30,6 +30,7 @@ func CreateBlock(data string, prevBlockHash []byte) *Block {
 		Nonce:         0,
 	}
 	//block = calcu.Cal(block)
+	// need run Cal(挖矿功能)
 
 	//block.SetHash()
 	return block
