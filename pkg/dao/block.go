@@ -1,6 +1,9 @@
 package dao
 
 import (
+	"bytes"
+	"encoding/gob"
+	"log"
 	"time"
 )
 
@@ -30,11 +33,43 @@ func CreateBlock(data string, prevBlockHash []byte) *Block {
 		Nonce:         0,
 	}
 	//block = calcu.Cal(block)
-
+	block = runfunc(block)
 	//block.SetHash()
+	return block
+}
+
+func runfunc(block *Block) *Block {
+	pow := NewProofOfWork(block)
+	nonce, hash := pow.Run()
+	block.Hash = hash[:]
+	block.Nonce = nonce
 	return block
 }
 
 func NewGenesisiBlock() *Block {
 	return CreateBlock("first", []byte{})
+}
+
+// 对象转化为二进制，写入文件
+func (block *Block) Serialize() []byte {
+	var res bytes.Buffer
+	encoder := gob.NewEncoder(&res)
+	err := encoder.Encode(block)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	return res.Bytes()
+}
+
+//读取文件，二进制转对象
+func DSerialize(data []byte) *Block {
+	var block Block
+	decoder := gob.NewDecoder(bytes.NewReader(data))
+	err := decoder.Decode(&block)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	return &block
 }

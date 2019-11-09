@@ -5,7 +5,7 @@ import (
 )
 
 func Cal(block *dao.Block) *dao.Block {
-	pow := NewProofOfWork(block)
+	pow := dao.NewProofOfWork(block)
 	nonce, hash := pow.Run()
 	block.Hash = hash[:]
 	block.Nonce = nonce

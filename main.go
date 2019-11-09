@@ -1,27 +1,14 @@
 package main
 
 import (
-	bcs "awesomeProject/pkg/dao"
-	"awesomeProject/pkg/funcs"
-	"fmt"
-	"strconv"
+	cli2 "awesomeProject/pkg/cli"
+	"awesomeProject/pkg/dao"
 )
 
 func main() {
-	fmt.Println("begin")
-	bc := bcs.NewBlockChain()
-	bc.AddBlock("first trial1")
-	bc.AddBlock("first trial2")
-	bc.AddBlock("first trial3")
-
-	for _, block := range bc.Blocks {
-		block = funcs.Cal(block)
-		fmt.Printf("prev hash: %x, ", block.PrevBlockHash)
-		fmt.Printf("data: %s, ", block.Data)
-		fmt.Printf("current hash: %x, ", block.Hash)
-		pow := funcs.NewProofOfWork(block)
-		fmt.Printf("pow %s\n", strconv.FormatBool(pow.Validate()))
-		fmt.Println()
-	}
+	block := dao.NewBlockChain()
+	defer block.DB.Close()
+	cli := cli2.CLI{block}
+	cli.Run()
 
 }

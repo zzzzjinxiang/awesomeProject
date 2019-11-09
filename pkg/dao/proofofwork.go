@@ -1,7 +1,6 @@
-package funcs
+package dao
 
 import (
-	"awesomeProject/pkg/dao"
 	"awesomeProject/pkg/utils"
 	"bytes"
 	"crypto/sha256"
@@ -17,11 +16,11 @@ var (
 const targetBits = 24
 
 type ProofOfWork struct {
-	block  *dao.Block
+	block  *Block
 	target *big.Int
 }
 
-func NewProofOfWork(block *dao.Block) *ProofOfWork {
+func NewProofOfWork(block *Block) *ProofOfWork {
 	target := big.NewInt(1)
 	target.Lsh(target, uint(256-targetBits))
 	pow := &ProofOfWork{block, target}
